@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ category.name }}
+{% endblock %}
+
+{% block content %}
+
+{% for offer in offers %}
+    <ul>
+    <li><a href={% url 'offer_detail'  pk=offer.pk %}> {{ offer.name }}</a></li>
+    <li>{{ offer.description }}</li>
+    <li>{{ offer.price }}</li>
+    </ul>
+{% endfor %}
+
+{% endblock %}

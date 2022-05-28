@@ -14,7 +14,7 @@ TRANSACTION_STATUSES = (
 MESSAGE_STATUSES = (
     (1, "Przeczytane"),
     (2, "Nieprzeczytane"),
-    (3, "Draft"),
+    (3, "Wersja robocza"),
 )
 
 
@@ -37,7 +37,10 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Category(models.Model):
     name = models.CharField(max_length=64)
-    description = models.TextField(blank=True)
+    slug = models.SlugField(max_length=64)
+
+    def __str__(self):
+        return self.name
 
 
 class Offer(models.Model):
@@ -46,6 +49,9 @@ class Offer(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     user = models.ManyToManyField(User, through="Transaction")
+
+    def __str__(self):
+        return self.name
 
 
 class Transaction(models.Model):

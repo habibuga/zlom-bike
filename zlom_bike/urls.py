@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from bike_app.views import StartView
+from bike_app.views import StartView, OfferDetailView, CategoryContainView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', StartView.as_view(), name="start"),
+    path('ogloszenia/<int:pk>/', OfferDetailView.as_view(), name="offer_detail"),
+    path('kategoria/<slug:slug>', CategoryContainView.as_view(), name="category_content"),
 ]
