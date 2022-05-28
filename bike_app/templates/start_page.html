@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}
+    Start
+{% endblock %}
+{% block content %}
+    <div class="main-search-input-wrap">
+        <form method="post">
+            {% csrf_token %}
+            <div class="main-search-input fl-wrap">
+                <div class="main-search-input-item">
+                    {{ form }}
+{#                    <input type="text"  value="" placeholder="Wpisz coś  ...">#}
+                </div>
+                <input type="submit" class="main-search-button" value="Wyszukaj">
+            </div>
+        </form>
+    </div>
+{% endblock %}
