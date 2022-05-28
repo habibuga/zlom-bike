@@ -61,3 +61,4 @@ class Message(models.Model):
     status = models.IntegerField(choices=MESSAGE_STATUSES)
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     recipient = models.ForeignKey(User, related_name='recipient_user', null=True, on_delete=models.CASCADE)
+
