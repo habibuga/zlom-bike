@@ -14,7 +14,7 @@
 
 <body>
     {% block body %}
-
+    <a href="{% url 'start' %}">Strona Startowa</a>
         {% block content %}{% endblock %}
 
     {% endblock %}
@@ -22,7 +22,12 @@
 
 <footer>
     {% block footer %}
-
+        {% if user.is_anonymous %}
+            <a href="{% url 'login' %}">Zaloguj</a>
+        {% else %}
+            <p>Witaj {{ user }}!</p>
+            <a href="{% url 'logout' %}">Wyloguj</a>
+        {% endif %}
     {% endblock %}
 </footer>
 

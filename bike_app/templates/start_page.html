@@ -9,10 +9,16 @@
             <div class="main-search-input fl-wrap">
                 <div class="main-search-input-item">
                     {{ form }}
-{#                    <input type="text"  value="" placeholder="Wpisz coś  ...">#}
                 </div>
                 <input type="submit" class="main-search-button" value="Wyszukaj">
             </div>
         </form>
+    </div>
+    <div>
+    <table>
+        {% for category in categories %}
+            <tr><td><a href={% url 'category_content'  slug=category.slug %}>{{ category.name }}</a></td></tr>
+        {% endfor %}
+    </table>
     </div>
 {% endblock %}

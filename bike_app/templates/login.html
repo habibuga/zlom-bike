@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_anonymous %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Zaloguj">
+</form>
+{% else %}
+    <p>Jesteś już zalogowany</p>
+{% endif %}
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

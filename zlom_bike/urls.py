@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from bike_app.views import StartView, OfferDetailView, CategoryContainView
+from bike_app.views import StartView, OfferDetailView, CategoryContainView, UserRegistrationView, LoginView, LogoutView,\
+    ResetPasswordView
 
 
 urlpatterns = [
@@ -24,4 +25,8 @@ urlpatterns = [
     path('', StartView.as_view(), name="start"),
     path('ogloszenia/<int:pk>/', OfferDetailView.as_view(), name="offer_detail"),
     path('kategoria/<slug:slug>', CategoryContainView.as_view(), name="category_content"),
+    path('rejestracja/', UserRegistrationView.as_view(), name="registration"),
+    path('login/', LoginView.as_view(), name="login"),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('zmien_haslo/', ResetPasswordView.as_view(), name='reset_password'),
 ]
