@@ -16,8 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from bike_app.views import StartView, OfferDetailView, CategoryContainView, UserRegistrationView, LoginView, LogoutView,\
-    ResetPasswordView
+from bike_app.views import StartView, OfferDetailView, CategoryContainView, UserRegistrationView, LoginView, \
+    LogoutView, ResetPasswordView, UpdateUserView
 
 
 urlpatterns = [
@@ -29,4 +29,5 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('zmien_haslo/', ResetPasswordView.as_view(), name='reset_password'),
+    path('zmien_dane/', UpdateUserView.as_view(), name='update_user'),
 ]
