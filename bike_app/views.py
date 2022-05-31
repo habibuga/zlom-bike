@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
@@ -6,7 +7,7 @@ from django.views import View
 from django.views.generic import FormView
 from django.views.generic.detail import DetailView
 
-from .forms import SearchOffer, NewUserForm, LoginForm, ResetPasswordForm
+from .forms import SearchOffer, NewUserForm, LoginForm, ResetPasswordForm, UpdateUserForm, UpdateProfileForm
 from .models import Offer, Category
 
 
@@ -110,3 +111,38 @@ class ResetPasswordView(LoginRequiredMixin, FormView):
         user.save()
         redirect_site = super().form_valid(form)
         return redirect_site
+
+
+class UpdateUserView(LoginRequiredMixin, View):
+    def get(self, request):
+        user_form = UpdateUserForm(initial={
+            "first_name": request.user.first_name,
+            "last_name": request.user.last_name,
+            "email": request.user.email,
+        })
+        profile_form = UpdateProfileForm(initial={
+            "location": request.user.profile.location,
+            "tel_num": request.user.profile.tel_num
+        })
+        ctx = {
+            "user_form": user_form,
+            "profile_form": profile_form
+        }
+        return render(request=request, template_name="update_user.html", context=ctx)
+
+    def post(self, request):
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Twoje dane zmienione!")
+            return redirect('start')
+        else:
+            user_form.add_error(None, 'Wprowadź poprwane dane!')
+            ctx = {
+                "user_form": user_form,
+                "profile_form": profile_form
+            }
+            return render(request=request, template_name="update_user.html", context=ctx)

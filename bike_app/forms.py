@@ -59,3 +59,28 @@ class ResetPasswordForm(forms.ModelForm):
 
         if password1 != password2:
             raise ValidationError("Hasła są różne!")
+
+
+class UpdateUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "email")
+        labels = {
+            "first_name": "Imie",
+            "last_name": "Nazwisko",
+            "email": "Email",
+        }
+
+
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ("location", "tel_num")
+        labels = {
+            "location": "Lokalizacja",
+            "tel_num": "Numer telefonu"
+        }
+
+
+class AddOfferForm(forms.ModelForm):
+    pass
