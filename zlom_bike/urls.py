@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from bike_app.views import StartView, OfferDetailView, CategoryContainView, UserRegistrationView, LoginView, \
-    LogoutView, ResetPasswordView, UpdateUserView, AddOfferView
+    LogoutView, ResetPasswordView, UpdateUserView, AddOfferView, UpdateOfferView
 
 
 urlpatterns = [
@@ -31,4 +31,5 @@ urlpatterns = [
     path('zmien_haslo/', ResetPasswordView.as_view(), name='reset_password'),
     path('zmien_dane/', UpdateUserView.as_view(), name='update_user'),
     path('dodaj_ogloszenie/', AddOfferView.as_view(), name='add_offer'),
+    path('zmien_ogloszenie/<int:pk>/', UpdateOfferView.as_view(), name='change_offer'),
 ]

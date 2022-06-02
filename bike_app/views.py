@@ -1,10 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, CreateView
+from django.views.generic import FormView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 
 from .forms import SearchOffer, NewUserForm, LoginForm, ResetPasswordForm, UpdateUserForm, UpdateProfileForm
@@ -156,3 +156,16 @@ class AddOfferView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class UpdateOfferView(LoginRequiredMixin, UpdateView):
+    model = Offer
+    fields = ['name', 'description', 'price', 'category']
+    template_name = 'update_offer.html'
+
+    # def get_object(self, queryset=None):
+    #     pk = self.kwargs.get("id")
+    #     return get_object_or_404(Offer, id=pk)
+
+    # def test_func(self):
+    #     return self.request.user = User.objects.get()
