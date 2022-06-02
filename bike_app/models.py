@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.urls import reverse
 
 TRANSACTION_STATUSES = (
     (1, "Aktywne"),
@@ -42,23 +42,22 @@ class Category(models.Model):
 
 
 class Offer(models.Model):
-    name = models.CharField(max_length=64)
-    description = models.TextField(max_length=1000)
-    price = models.DecimalField(max_digits=12, decimal_places=2)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    # category MtM
-    user = models.ManyToManyField(User, through="Transaction")
-    # zmienic user na FK do usera (sprzedawca)
+    name = models.CharField(max_length=64, verbose_name='Nazwa')
+    description = models.TextField(max_length=1000, verbose_name='Opis')
+    price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Cena')
+    date_added = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=TRANSACTION_STATUSES, default=1)
+    category = models.ManyToManyField(Category, verbose_name='Kategoria')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
+    def category_names(self):
+        return ', '.join([c.name for c in self.category.all()])
 
-class Transaction(models.Model):
-    date_added = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=TRANSACTION_STATUSES)
-    offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    def get_absolute_url(self):
+        return reverse('offer_detail', args=[self.id])
 
 
 class Message(models.Model):

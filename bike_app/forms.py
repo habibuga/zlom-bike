@@ -80,7 +80,3 @@ class UpdateProfileForm(forms.ModelForm):
             "location": "Lokalizacja",
             "tel_num": "Numer telefonu"
         }
-
-
-class AddOfferForm(forms.ModelForm):
-    pass

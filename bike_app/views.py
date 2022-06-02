@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, CreateView
 from django.views.generic.detail import DetailView
 
 from .forms import SearchOffer, NewUserForm, LoginForm, ResetPasswordForm, UpdateUserForm, UpdateProfileForm
@@ -23,24 +23,6 @@ class StartView(View):
 
     def post(self, request):
         pass
-
-
-class OfferDetailView(DetailView):
-
-    model = Offer
-    template_name = "offer_details.html"
-    context_object_name = "offer"
-
-
-class CategoryContainView(View):
-    def get(self, request, slug):
-        category = Category.objects.get(slug=slug)
-        offers = Offer.objects.filter(category=category)
-        ctx = {
-            "offers": offers,
-            "category": category
-        }
-        return render(request=request, template_name="category_content.html", context=ctx)
 
 
 class UserRegistrationView(View):
@@ -146,3 +128,31 @@ class UpdateUserView(LoginRequiredMixin, View):
                 "profile_form": profile_form
             }
             return render(request=request, template_name="update_user.html", context=ctx)
+
+
+class OfferDetailView(DetailView):
+
+    model = Offer
+    template_name = "offer_details.html"
+    context_object_name = "offer"
+
+
+class CategoryContainView(View):
+    def get(self, request, slug):
+        category = Category.objects.get(slug=slug)
+        offers = category.offer_set.all()
+        ctx = {
+            "offers": offers,
+            "category": category
+        }
+        return render(request=request, template_name="category_content.html", context=ctx)
+
+
+class AddOfferView(LoginRequiredMixin, CreateView):
+    model = Offer
+    fields = ['name', 'description', 'price', 'category']
+    template_name = "create_offer.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
