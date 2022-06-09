@@ -6,7 +6,7 @@ from django.urls import reverse
 
 TRANSACTION_STATUSES = (
     (1, "Aktywne"),
-    (2, "Sprzedane"),
+    (2, "Zakończone"),
     (3, "Zarchiwizowane"),
 )
 

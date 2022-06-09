@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Mój profil {% endblock %}
+{% block content %}
+    {% if user.is_anonymous %}
+            <a href="{% url 'login' %}">Zaloguj</a>
+    {% else %}
+        <ul>
+            <li>Login: {{ user.username }}</li>
+            <li>Imie: {{ user.first_name }}</li>
+            <li>Nazwisko: {{ user.last_name }}</li>
+            <li>Email: {{ user.email }}</li>
+            <li>Telefon: {{ user.profile.tel_num }}</li>
+            <li>Lokalizacja: {{ user.profile.location }}</li>
+        </ul>
+        <a href="{% url 'update_user' %}">
+            <button>Zmień dane</button>
+        </a>
+        <a href="{% url 'reset_password' %}">
+            <button>Resetuj hasło</button>
+        </a>
+
+    {% endif %}
+{% endblock %}

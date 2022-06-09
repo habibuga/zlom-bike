@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path
 
 from bike_app.views import StartView, OfferDetailView, CategoryContainView, UserRegistrationView, LoginView, \
-    LogoutView, ResetPasswordView, UpdateUserView, AddOfferView, UpdateOfferView
+    LogoutView, ResetPasswordView, UpdateUserView, AddOfferView, UpdateOfferView, DeactivateOfferView, UserOfferView, \
+    UserDetailView
 
 
 urlpatterns = [
@@ -29,7 +30,10 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('zmien_haslo/', ResetPasswordView.as_view(), name='reset_password'),
+    path('moj_profil/', UserDetailView.as_view(), name='user_detail'),
     path('zmien_dane/', UpdateUserView.as_view(), name='update_user'),
     path('dodaj_ogloszenie/', AddOfferView.as_view(), name='add_offer'),
     path('zmien_ogloszenie/<int:pk>/', UpdateOfferView.as_view(), name='change_offer'),
+    path('deaktywuj_ogloszenie/<int:pk>/', DeactivateOfferView.as_view(), name="deactivate"),
+    path('moje_ogloszenia/', UserOfferView.as_view(), name="user_offers"),
 ]

@@ -8,6 +8,17 @@ Ogloszenie
     <li>Opis: {{ offer.description }}</li>
     <li>Kategoria: {{ offer.category_names }}</li>
     <li>Cena: {{ offer.price }} PLN</li>
-    <li>{{ offer.description }}</li>
+    <li>Status: {{ offer.get_status_display }}</li>
+    <li>Sprzedawca: {{ offer.user.username }}</li>
     </ul>
+    {% if user.is_anonymous %}
+
+    {% else %}
+        <a href="{% url 'change_offer' pk=offer.pk %}">
+            <button>Zmień</button>
+        </a>
+        <a href="{% url 'deactivate' pk=offer.pk %}">
+            <button>Zakończ</button>
+        </a>
+    {% endif %}
 {% endblock %}

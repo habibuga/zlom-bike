@@ -7,7 +7,8 @@ from django.views import View
 from django.views.generic import FormView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 
-from .forms import SearchOffer, NewUserForm, LoginForm, ResetPasswordForm, UpdateUserForm, UpdateProfileForm
+from .forms import SearchOffer, NewUserForm, LoginForm, ResetPasswordForm, UpdateUserForm, UpdateProfileForm, \
+    OfferDeactivationForm
 from .models import Offer, Category
 
 
@@ -140,7 +141,7 @@ class OfferDetailView(DetailView):
 class CategoryContainView(View):
     def get(self, request, slug):
         category = Category.objects.get(slug=slug)
-        offers = category.offer_set.all()
+        offers = category.offer_set.all().order_by('-date_added')
         ctx = {
             "offers": offers,
             "category": category
@@ -163,9 +164,41 @@ class UpdateOfferView(LoginRequiredMixin, UpdateView):
     fields = ['name', 'description', 'price', 'category']
     template_name = 'update_offer.html'
 
-    # def get_object(self, queryset=None):
-    #     pk = self.kwargs.get("id")
-    #     return get_object_or_404(Offer, id=pk)
+    def get_queryset(self):
+        queryset = super(UpdateOfferView, self).get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        return queryset
 
-    # def test_func(self):
-    #     return self.request.user = User.objects.get()
+
+class DeactivateOfferView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        ctx = {"offer": Offer.objects.get(id=pk),
+               "form": OfferDeactivationForm()}
+        return render(request=request, template_name="offer_deactivate.html", context=ctx)
+
+    def post(self, request, pk):
+        form = OfferDeactivationForm(request.POST)
+        offer = Offer.objects.get(id=pk)
+        if form.is_valid():
+            answer = form.cleaned_data['answer']
+            if answer == "1":
+                offer.status = 2
+                offer.save()
+                return redirect('offer_detail', pk=pk)
+            else:
+                return redirect('offer_detail', pk=pk)
+
+
+class UserOfferView(LoginRequiredMixin, View):
+    def get(self, request):
+        user = request.user
+        offers = user.offer_set.all().order_by('-date_added')
+        ctx = {
+            "offers": offers,
+        }
+        return render(request=request, template_name="user_offers.html", context=ctx)
+
+
+class UserDetailView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request=request, template_name="user_detail.html")

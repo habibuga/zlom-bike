@@ -7,6 +7,11 @@ from .models import Offer, Message, Profile
 
 User = get_user_model()
 
+DEACTIVATION_CHOICES = (
+    (1, "Tak"),
+    (2, "Nie"),
+)
+
 
 class SearchOffer(forms.Form):
     search_word = forms.CharField(label="", max_length=50,
@@ -80,3 +85,7 @@ class UpdateProfileForm(forms.ModelForm):
             "location": "Lokalizacja",
             "tel_num": "Numer telefonu"
         }
+
+
+class OfferDeactivationForm(forms.Form):
+    answer = forms.ChoiceField(label="", choices=DEACTIVATION_CHOICES, widget=forms.RadioSelect)

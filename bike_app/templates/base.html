@@ -26,7 +26,10 @@
             <a href="{% url 'login' %}">Zaloguj</a>
         {% else %}
             <p>Witaj {{ user }}!</p>
-            <a href="{% url 'logout' %}">Wyloguj</a>
+            <p><a href="{% url 'add_offer' %}">Dodaj ogloszenie</a></p>
+            <p><a href="{% url 'user_offers' %}">Moje ogloszenia</a></p>
+            <p><a href="{% url 'user_detail' %}">Mój profil</a></p>
+            <p><a href="{% url 'logout' %}">Wyloguj</a></p>
         {% endif %}
     {% endblock %}
 </footer>
