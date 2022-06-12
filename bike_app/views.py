@@ -23,7 +23,10 @@ class StartView(View):
         return render(request=request, template_name="start_page.html", context=ctx)
 
     def post(self, request):
-        pass
+        form = SearchOffer(request.POST)
+        if form.is_valid():
+            search_word = form.cleaned_data['search_word']
+            # offers =
 
 
 class UserRegistrationView(View):
