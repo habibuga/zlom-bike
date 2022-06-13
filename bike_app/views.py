@@ -23,10 +23,17 @@ class StartView(View):
         return render(request=request, template_name="start_page.html", context=ctx)
 
     def post(self, request):
+        categories = Category.objects.all()
         form = SearchOffer(request.POST)
         if form.is_valid():
             search_word = form.cleaned_data['search_word']
-            # offers =
+            offers = Offer.objects.filter(name__icontains=search_word)
+            ctx = {
+                "offers": offers,
+                "categories": categories,
+                "form": form
+            }
+            return render(request=request, template_name="start_page.html", context=ctx)
 
 
 class UserRegistrationView(View):

@@ -36,4 +36,5 @@ urlpatterns = [
     path('zmien_ogloszenie/<int:pk>/', UpdateOfferView.as_view(), name='change_offer'),
     path('deaktywuj_ogloszenie/<int:pk>/', DeactivateOfferView.as_view(), name="deactivate"),
     path('moje_ogloszenia/', UserOfferView.as_view(), name="user_offers"),
+    path('wynik_wyszukiwania/', StartView.as_view(), name="search_result"),
 ]

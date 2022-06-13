@@ -13,6 +13,11 @@
                 <input type="submit" class="main-search-button" value="Wyszukaj">
             </div>
         </form>
+    <ul>
+        {% for offer in offers %}
+            <li><a href={% url 'offer_detail'  pk=offer.pk %}>{{ offer.name }}</a></li>
+        {% endfor %}
+    </ul>
     </div>
     <div>
     <table>
